@@ -40,6 +40,7 @@
             label4 = new Label();
             txtBackCover = new TextBox();
             label5 = new Label();
+            button2 = new Button();
             SuspendLayout();
             // 
             // printDocument1
@@ -142,11 +143,22 @@
             label5.TabIndex = 10;
             label5.Text = "Back Cover";
             // 
+            // button2
+            // 
+            button2.Location = new Point(159, 596);
+            button2.Name = "button2";
+            button2.Size = new Size(143, 29);
+            button2.TabIndex = 11;
+            button2.Text = "Select Folder";
+            button2.UseVisualStyleBackColor = true;
+            button2.Click += button2_Click;
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1060, 655);
+            Controls.Add(button2);
             Controls.Add(label5);
             Controls.Add(txtBackCover);
             Controls.Add(label4);
@@ -179,5 +191,6 @@
         private Label label4;
         private TextBox txtBackCover;
         private Label label5;
+        private Button button2;
     }
 }

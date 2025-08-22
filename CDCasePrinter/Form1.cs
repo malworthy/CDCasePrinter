@@ -1,4 +1,7 @@
 using System.Drawing.Drawing2D;
+using System.Text;
+using ATL;
+using ATL.AudioData;
 
 namespace CDCasePrinter
 {
@@ -20,7 +23,7 @@ namespace CDCasePrinter
                 PrintFrontCover(e.Graphics);
                 e.HasMorePages = true;
             }
-            else if (page == 2) 
+            else if (page == 2)
             {
                 PrintBackCover(e.Graphics);
                 e.HasMorePages = false;
@@ -40,7 +43,7 @@ namespace CDCasePrinter
             float border = 10;
             g.DrawRectangle(recPen, new RectangleF(new PointF(marginX, marginY), new SizeF(151, 118)));
             g.DrawLine(recPen, marginX + 6, marginY, marginX + 6, marginY + 118);
-            g.DrawLine(recPen, marginX + 151-6, marginY, marginX + 151-6, marginY + 118);
+            g.DrawLine(recPen, marginX + 151 - 6, marginY, marginX + 151 - 6, marginY + 118);
 
             var drawFormat = new StringFormat(StringFormatFlags.DirectionVertical);
             var size = g.MeasureString(title, spineFont, new PointF(0, 0), drawFormat);
@@ -53,8 +56,18 @@ namespace CDCasePrinter
             g.DrawString(title, spineFont, Brushes.Black, 0, 0);
             g.Restore(state);
 
-            g.DrawString(txtArtist.Text, artistFont, Brushes.Black, 
+            // artist
+            g.DrawString(txtArtist.Text, artistFont, Brushes.Black,
                 new PointF(marginX + border, marginY + border));
+
+            // album
+            size = g.MeasureString(txtAlbum.Text, albumFont);
+            g.DrawString(txtAlbum.Text, albumFont, Brushes.Black,
+                new PointF(marginX + border, marginY + border + size.Height));
+
+            // songs
+            g.DrawString(txtBackCover.Text, new Font("Ariel", 10), Brushes.Black,
+                new RectangleF(marginX + border, marginY + 25, 130, 100));
         }
 
         private void PrintFrontCover(Graphics g)
@@ -62,32 +75,87 @@ namespace CDCasePrinter
             var recPen = new Pen(Color.Black, 0.5f);
             float marginX = 45;
             float marginY = 25;
+            float padding = 10;
 
             g.DrawRectangle(recPen, new RectangleF(new PointF(marginX, marginY), new SizeF(120, 240)));
             g.DrawLine(recPen, marginX, marginY + 120, marginX + 120, marginY + 120);
-            if(!string.IsNullOrEmpty(txtCoverArt.Text) && File.Exists(txtCoverArt.Text))
+            if (!string.IsNullOrEmpty(txtCoverArt.Text) && File.Exists(txtCoverArt.Text))
             {
                 var bmp = (Bitmap)Bitmap.FromFile(txtCoverArt.Text);
                 bmp.RotateFlip(RotateFlipType.Rotate270FlipXY);
                 g.DrawImage(bmp, new RectangleF(marginX, marginY + 120, 120, 120));
+                bmp.Dispose();
             }
 
             var drawFormat = new StringFormat(StringFormatFlags.DirectionVertical | StringFormatFlags.DirectionRightToLeft);
 
-            g.DrawString(txtFrontCoverText.Text, new Font("Ariel", 10), Brushes.Black, new RectangleF(marginX, marginY,120,120), drawFormat);
+            g.DrawString(txtFrontCoverText.Text, new Font("Ariel", 10), Brushes.Black,
+                new RectangleF(marginX,
+                    marginY + padding,
+                    120 - padding,
+                    120 - padding),
+                drawFormat);
         }
-
         private void button1_Click(object sender, EventArgs e)
         {
-            using var printerSelector = new PrintDialog();
-            if (printerSelector.ShowDialog() == DialogResult.OK)
+            try
             {
-                printDocument1.PrinterSettings = printerSelector.PrinterSettings;
-                using var pp = new PrintPreviewDialog();
-                pp.Document = printDocument1;
-
-                pp.ShowDialog();
+                ShowPrintPreview();
             }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Could not print");
+            }
+
+            // print dialog unreliable
+
+            //using var printerSelector = new PrintDialog();
+
+            //if (printerSelector.ShowDialog() == DialogResult.OK)
+            //{
+            //    printDocument1.PrinterSettings = printerSelector.PrinterSettings;
+            //    using var pp = new PrintPreviewDialog();
+            //    pp.Document = printDocument1;
+            //    (pp as Form).WindowState = FormWindowState.Maximized;
+
+            //    pp.ShowDialog();
+            //}
+        }
+
+        private void ShowPrintPreview()
+        {
+            using var pp = new PrintPreviewDialog();
+            pp.Document = printDocument1;
+            (pp as Form).WindowState = FormWindowState.Maximized;
+
+            pp.ShowDialog();
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            var imageFiles = new[] { ".jpg", ".jpeg", ".png", ".bmp" };
+            using var dlg = new FolderBrowserDialog();
+            if (dlg.ShowDialog() != DialogResult.OK) return;
+            var files = Directory.GetFiles(dlg.SelectedPath);
+            if (files.Length == 0) return;
+            var firstFile = files.FirstOrDefault(x => !imageFiles.Contains(Path.GetExtension(x.ToLower())));
+            var track1 = new Track(firstFile);
+            txtArtist.Text = track1.Artist;
+            txtAlbum.Text = track1.Album;
+
+           
+
+            var imageFile = files.FirstOrDefault(x => imageFiles.Contains(Path.GetExtension(x.ToLower())));
+            txtCoverArt.Text = imageFile ?? string.Empty;
+            var songs = new StringBuilder();
+            foreach (var file in files)
+            {
+                var track = new Track(file);
+                if (track.Duration > 0)
+                    songs.AppendLine($"{track.TrackNumber} {track.Title}");
+                
+            }
+            txtBackCover.Text = songs.ToString();
         }
     }
 }
