@@ -41,13 +41,20 @@ namespace CDCasePrinter
             float marginX = 25;
             float marginY = 25;
             float border = 10;
-            g.DrawRectangle(recPen, new RectangleF(new PointF(marginX, marginY), new SizeF(151, 118)));
+            float width = 150;
+
+            g.DrawRectangle(recPen, new RectangleF(new PointF(marginX, marginY), new SizeF(width, 118)));
             g.DrawLine(recPen, marginX + 6, marginY, marginX + 6, marginY + 118);
-            g.DrawLine(recPen, marginX + 151 - 6, marginY, marginX + 151 - 6, marginY + 118);
+            g.DrawLine(recPen, marginX + width - 6, marginY, marginX + width - 6, marginY + 118);
 
             var drawFormat = new StringFormat(StringFormatFlags.DirectionVertical);
             var size = g.MeasureString(title, spineFont, new PointF(0, 0), drawFormat);
-            g.DrawString(title, spineFont, Brushes.Black, marginX + 151 - 5, marginY + (118 / 2 - size.Height / 2), drawFormat);
+            g.DrawString(title, 
+                spineFont, 
+                Brushes.Black, 
+                marginX + width - 5, 
+                marginY + (118 / 2 - size.Height / 2), 
+                drawFormat);
 
             var state = g.Save();
             g.ResetTransform();
@@ -56,18 +63,19 @@ namespace CDCasePrinter
             g.DrawString(title, spineFont, Brushes.Black, 0, 0);
             g.Restore(state);
 
+            var textX = marginX + border + 6;
             // artist
             g.DrawString(txtArtist.Text, artistFont, Brushes.Black,
-                new PointF(marginX + border, marginY + border));
+                new PointF(textX, marginY + border));
 
             // album
             size = g.MeasureString(txtAlbum.Text, albumFont);
             g.DrawString(txtAlbum.Text, albumFont, Brushes.Black,
-                new PointF(marginX + border, marginY + border + size.Height));
+                new PointF(textX, marginY + border + size.Height));
 
             // songs
             g.DrawString(txtBackCover.Text, new Font("Ariel", 10), Brushes.Black,
-                new RectangleF(marginX + border, marginY + 25, 130, 100));
+                new RectangleF(textX, marginY + 25, 130, 100));
         }
 
         private void PrintFrontCover(Graphics g)
@@ -106,55 +114,61 @@ namespace CDCasePrinter
             {
                 MessageBox.Show(ex.Message, "Could not print");
             }
-
-            // print dialog unreliable
-
-            //using var printerSelector = new PrintDialog();
-
-            //if (printerSelector.ShowDialog() == DialogResult.OK)
-            //{
-            //    printDocument1.PrinterSettings = printerSelector.PrinterSettings;
-            //    using var pp = new PrintPreviewDialog();
-            //    pp.Document = printDocument1;
-            //    (pp as Form).WindowState = FormWindowState.Maximized;
-
-            //    pp.ShowDialog();
-            //}
         }
 
         private void ShowPrintPreview()
         {
-            using var pp = new PrintPreviewDialog();
-            pp.Document = printDocument1;
-            (pp as Form).WindowState = FormWindowState.Maximized;
+            using var printerSelector = new PrintDialog();
 
-            pp.ShowDialog();
+            if (printerSelector.ShowDialog() == DialogResult.OK)
+            {
+                printDocument1.PrinterSettings = printerSelector.PrinterSettings;
+                using var pp = new PrintPreviewDialog();
+                pp.Document = printDocument1;
+                (pp as Form).WindowState = FormWindowState.Maximized;
+
+                pp.ShowDialog();
+            }
         }
 
         private void button2_Click(object sender, EventArgs e)
         {
             var imageFiles = new[] { ".jpg", ".jpeg", ".png", ".bmp" };
+            var audioFiles = new[] { ".mp3", ".flac", ".ogg", ".wav", ".m4a" };
             using var dlg = new FolderBrowserDialog();
             if (dlg.ShowDialog() != DialogResult.OK) return;
             var files = Directory.GetFiles(dlg.SelectedPath);
             if (files.Length == 0) return;
-            var firstFile = files.FirstOrDefault(x => !imageFiles.Contains(Path.GetExtension(x.ToLower())));
+            var firstFile = files.FirstOrDefault(x => audioFiles.Contains(Path.GetExtension(x.ToLower())));
             var track1 = new Track(firstFile);
             txtArtist.Text = track1.Artist;
             txtAlbum.Text = track1.Album;
+            
+            var audioFormat = $"Original Audio Format: {track1.AudioFormat.Name}";
 
-           
+
+
 
             var imageFile = files.FirstOrDefault(x => imageFiles.Contains(Path.GetExtension(x.ToLower())));
             txtCoverArt.Text = imageFile ?? string.Empty;
             var songs = new StringBuilder();
+            var totalDuration = TimeSpan.Zero;
             foreach (var file in files)
             {
                 var track = new Track(file);
                 if (track.Duration > 0)
-                    songs.AppendLine($"{track.TrackNumber} {track.Title}");
+                {
+                    var duration = TimeSpan.FromSeconds(track.Duration);
+                    songs.AppendLine($"{track.TrackNumber}. {track.Title} {duration:m\\:ss}");
+                    totalDuration += duration;
+                }
+                    
                 
             }
+            songs.AppendLine($"Total Length: {totalDuration:m\\:ss}");
+            songs.AppendLine();
+            songs.AppendLine();
+            songs.AppendLine(audioFormat);
             txtBackCover.Text = songs.ToString();
         }
     }

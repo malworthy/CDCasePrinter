@@ -60,7 +60,7 @@
             // 
             // txtFrontCoverText
             // 
-            txtFrontCoverText.Location = new Point(67, 293);
+            txtFrontCoverText.Location = new Point(67, 268);
             txtFrontCoverText.Margin = new Padding(3, 4, 3, 4);
             txtFrontCoverText.Multiline = true;
             txtFrontCoverText.Name = "txtFrontCoverText";
@@ -86,14 +86,14 @@
             // 
             // txtArtist
             // 
-            txtArtist.Location = new Point(70, 153);
+            txtArtist.Location = new Point(70, 142);
             txtArtist.Name = "txtArtist";
             txtArtist.Size = new Size(364, 27);
             txtArtist.TabIndex = 4;
             // 
             // txtAlbum
             // 
-            txtAlbum.Location = new Point(72, 217);
+            txtAlbum.Location = new Point(67, 205);
             txtAlbum.Name = "txtAlbum";
             txtAlbum.Size = new Size(362, 27);
             txtAlbum.TabIndex = 5;
@@ -101,7 +101,7 @@
             // label2
             // 
             label2.AutoSize = true;
-            label2.Location = new Point(69, 126);
+            label2.Location = new Point(67, 119);
             label2.Name = "label2";
             label2.Size = new Size(44, 20);
             label2.TabIndex = 6;
@@ -110,7 +110,7 @@
             // label3
             // 
             label3.AutoSize = true;
-            label3.Location = new Point(74, 195);
+            label3.Location = new Point(70, 182);
             label3.Name = "label3";
             label3.Size = new Size(53, 20);
             label3.TabIndex = 7;
@@ -119,7 +119,7 @@
             // label4
             // 
             label4.AutoSize = true;
-            label4.Location = new Point(70, 265);
+            label4.Location = new Point(67, 244);
             label4.Name = "label4";
             label4.Size = new Size(83, 20);
             label4.TabIndex = 8;
@@ -131,7 +131,7 @@
             txtBackCover.Margin = new Padding(3, 4, 3, 4);
             txtBackCover.Multiline = true;
             txtBackCover.Name = "txtBackCover";
-            txtBackCover.Size = new Size(365, 506);
+            txtBackCover.Size = new Size(513, 468);
             txtBackCover.TabIndex = 9;
             // 
             // label5
