@@ -69,11 +69,10 @@
             // 
             // txtCoverArt
             // 
-            txtCoverArt.Location = new Point(70, 80);
+            txtCoverArt.Location = new Point(67, 80);
             txtCoverArt.Name = "txtCoverArt";
             txtCoverArt.Size = new Size(362, 27);
             txtCoverArt.TabIndex = 2;
-            txtCoverArt.Text = "C:\\Users\\malwo\\OneDrive\\Music\\library\\flac\\Laura Jean - Laura Jean\\cover.jpg";
             // 
             // label1
             // 
@@ -86,7 +85,7 @@
             // 
             // txtArtist
             // 
-            txtArtist.Location = new Point(70, 142);
+            txtArtist.Location = new Point(67, 142);
             txtArtist.Name = "txtArtist";
             txtArtist.Size = new Size(364, 27);
             txtArtist.TabIndex = 4;
@@ -110,7 +109,7 @@
             // label3
             // 
             label3.AutoSize = true;
-            label3.Location = new Point(70, 182);
+            label3.Location = new Point(67, 182);
             label3.Name = "label3";
             label3.Size = new Size(53, 20);
             label3.TabIndex = 7;
@@ -131,13 +130,13 @@
             txtBackCover.Margin = new Padding(3, 4, 3, 4);
             txtBackCover.Multiline = true;
             txtBackCover.Name = "txtBackCover";
-            txtBackCover.Size = new Size(513, 468);
+            txtBackCover.Size = new Size(513, 481);
             txtBackCover.TabIndex = 9;
             // 
             // label5
             // 
             label5.AutoSize = true;
-            label5.Location = new Point(498, 44);
+            label5.Location = new Point(493, 44);
             label5.Name = "label5";
             label5.Size = new Size(82, 20);
             label5.TabIndex = 10;
@@ -145,9 +144,9 @@
             // 
             // button2
             // 
-            button2.Location = new Point(159, 596);
+            button2.Location = new Point(159, 594);
             button2.Name = "button2";
-            button2.Size = new Size(143, 29);
+            button2.Size = new Size(143, 31);
             button2.TabIndex = 11;
             button2.Text = "Select Folder";
             button2.UseVisualStyleBackColor = true;
@@ -172,7 +171,8 @@
             Controls.Add(button1);
             Margin = new Padding(3, 4, 3, 4);
             Name = "Form1";
-            Text = "Form1";
+            StartPosition = FormStartPosition.CenterScreen;
+            Text = "CD Case Printer";
             ResumeLayout(false);
             PerformLayout();
         }

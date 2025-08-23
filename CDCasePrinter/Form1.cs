@@ -1,4 +1,5 @@
 using System.Drawing.Drawing2D;
+using System.Reflection;
 using System.Text;
 using ATL;
 using ATL.AudioData;
@@ -21,14 +22,25 @@ namespace CDCasePrinter
             if (page == 1)
             {
                 PrintFrontCover(e.Graphics);
+                PrintFooter(e.Graphics);
                 e.HasMorePages = true;
             }
             else if (page == 2)
             {
                 PrintBackCover(e.Graphics);
+                PrintFooter(e.Graphics);
                 e.HasMorePages = false;
                 page = 0;
             }
+        }
+
+        private void PrintFooter(Graphics g)
+        {
+            var assembly = Assembly.GetExecutingAssembly();
+            var fvi = System.Diagnostics.FileVersionInfo.GetVersionInfo(assembly.Location);
+
+            var text = $"CD Case Printer - Version {fvi.FileVersion}";
+            g.DrawString(text, new Font("Ariel", 9), Brushes.Gray, 10, 280);
         }
 
         private void PrintBackCover(Graphics g)
@@ -52,7 +64,7 @@ namespace CDCasePrinter
             g.DrawString(title, 
                 spineFont, 
                 Brushes.Black, 
-                marginX + width - 5, 
+                marginX + width - 5.5f, 
                 marginY + (118 / 2 - size.Height / 2), 
                 drawFormat);
 
@@ -100,8 +112,8 @@ namespace CDCasePrinter
             g.DrawString(txtFrontCoverText.Text, new Font("Ariel", 10), Brushes.Black,
                 new RectangleF(marginX,
                     marginY + padding,
-                    120 - padding,
-                    120 - padding),
+                    120 - padding*2,
+                    120 - padding*2),
                 drawFormat);
         }
         private void button1_Click(object sender, EventArgs e)
@@ -144,10 +156,12 @@ namespace CDCasePrinter
             txtArtist.Text = track1.Artist;
             txtAlbum.Text = track1.Album;
             
-            var audioFormat = $"Original Audio Format: {track1.AudioFormat.Name}";
-
-
-
+            var audioFormat = $"Source Audio Format: {track1.AudioFormat.Name}";
+            if (track1.AudioFormat.ShortName.StartsWith("MPEG"))
+            {
+                if (track1.IsVBR) audioFormat += " (VBR)";
+                else audioFormat += $" ({track1.Bitrate} kbps)";
+            }
 
             var imageFile = files.FirstOrDefault(x => imageFiles.Contains(Path.GetExtension(x.ToLower())));
             txtCoverArt.Text = imageFile ?? string.Empty;
@@ -162,8 +176,6 @@ namespace CDCasePrinter
                     songs.AppendLine($"{track.TrackNumber}. {track.Title} {duration:m\\:ss}");
                     totalDuration += duration;
                 }
-                    
-                
             }
             songs.AppendLine($"Total Length: {totalDuration:m\\:ss}");
             songs.AppendLine();
