@@ -2,7 +2,6 @@ using System.Drawing.Drawing2D;
 using System.Reflection;
 using System.Text;
 using ATL;
-using ATL.AudioData;
 
 namespace CDCasePrinter
 {
@@ -116,7 +115,7 @@ namespace CDCasePrinter
                     120 - padding*2),
                 drawFormat);
         }
-        private void button1_Click(object sender, EventArgs e)
+        private void btnPrint_Click(object sender, EventArgs e)
         {
             try
             {
@@ -131,6 +130,7 @@ namespace CDCasePrinter
         private void ShowPrintPreview()
         {
             using var printerSelector = new PrintDialog();
+            printerSelector.Document = printDocument1;
 
             if (printerSelector.ShowDialog() == DialogResult.OK)
             {
@@ -143,7 +143,7 @@ namespace CDCasePrinter
             }
         }
 
-        private void button2_Click(object sender, EventArgs e)
+        private void btnFolder_Click(object sender, EventArgs e)
         {
             var imageFiles = new[] { ".jpg", ".jpeg", ".png", ".bmp" };
             var audioFiles = new[] { ".mp3", ".flac", ".ogg", ".wav", ".m4a" };

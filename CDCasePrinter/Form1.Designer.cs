@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             printDocument1 = new System.Drawing.Printing.PrintDocument();
-            button1 = new Button();
+            btnPrint = new Button();
             txtFrontCoverText = new TextBox();
             txtCoverArt = new TextBox();
             label1 = new Label();
@@ -40,23 +40,23 @@
             label4 = new Label();
             txtBackCover = new TextBox();
             label5 = new Label();
-            button2 = new Button();
+            btnFolder = new Button();
             SuspendLayout();
             // 
             // printDocument1
             // 
             printDocument1.PrintPage += printDocument1_PrintPage;
             // 
-            // button1
+            // btnPrint
             // 
-            button1.Location = new Point(67, 594);
-            button1.Margin = new Padding(3, 4, 3, 4);
-            button1.Name = "button1";
-            button1.Size = new Size(86, 31);
-            button1.TabIndex = 0;
-            button1.Text = "Print";
-            button1.UseVisualStyleBackColor = true;
-            button1.Click += button1_Click;
+            btnPrint.Location = new Point(67, 594);
+            btnPrint.Margin = new Padding(3, 4, 3, 4);
+            btnPrint.Name = "btnPrint";
+            btnPrint.Size = new Size(86, 31);
+            btnPrint.TabIndex = 0;
+            btnPrint.Text = "Print";
+            btnPrint.UseVisualStyleBackColor = true;
+            btnPrint.Click += btnPrint_Click;
             // 
             // txtFrontCoverText
             // 
@@ -142,22 +142,22 @@
             label5.TabIndex = 10;
             label5.Text = "Back Cover";
             // 
-            // button2
+            // btnFolder
             // 
-            button2.Location = new Point(159, 594);
-            button2.Name = "button2";
-            button2.Size = new Size(143, 31);
-            button2.TabIndex = 11;
-            button2.Text = "Select Folder";
-            button2.UseVisualStyleBackColor = true;
-            button2.Click += button2_Click;
+            btnFolder.Location = new Point(159, 594);
+            btnFolder.Name = "btnFolder";
+            btnFolder.Size = new Size(143, 31);
+            btnFolder.TabIndex = 11;
+            btnFolder.Text = "Select Folder";
+            btnFolder.UseVisualStyleBackColor = true;
+            btnFolder.Click += btnFolder_Click;
             // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1060, 655);
-            Controls.Add(button2);
+            Controls.Add(btnFolder);
             Controls.Add(label5);
             Controls.Add(txtBackCover);
             Controls.Add(label4);
@@ -168,7 +168,7 @@
             Controls.Add(label1);
             Controls.Add(txtCoverArt);
             Controls.Add(txtFrontCoverText);
-            Controls.Add(button1);
+            Controls.Add(btnPrint);
             Margin = new Padding(3, 4, 3, 4);
             Name = "Form1";
             StartPosition = FormStartPosition.CenterScreen;
@@ -180,7 +180,7 @@
         #endregion
 
         private System.Drawing.Printing.PrintDocument printDocument1;
-        private Button button1;
+        private Button btnPrint;
         private TextBox txtFrontCoverText;
         private TextBox txtCoverArt;
         private Label label1;
@@ -191,6 +191,6 @@
         private Label label4;
         private TextBox txtBackCover;
         private Label label5;
-        private Button button2;
+        private Button btnFolder;
     }
 }
