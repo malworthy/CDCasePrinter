@@ -1,6 +1,6 @@
 ﻿namespace CDCasePrinter
 {
-    partial class Form1
+    partial class MainForm
     {
         /// <summary>
         ///  Required designer variable.
@@ -41,6 +41,7 @@
             txtBackCover = new TextBox();
             label5 = new Label();
             btnFolder = new Button();
+            btnSelectCoverArt = new Button();
             SuspendLayout();
             // 
             // printDocument1
@@ -152,11 +153,22 @@
             btnFolder.UseVisualStyleBackColor = true;
             btnFolder.Click += btnFolder_Click;
             // 
+            // btnSelectCoverArt
+            // 
+            btnSelectCoverArt.Location = new Point(435, 80);
+            btnSelectCoverArt.Name = "btnSelectCoverArt";
+            btnSelectCoverArt.Size = new Size(51, 29);
+            btnSelectCoverArt.TabIndex = 12;
+            btnSelectCoverArt.Text = "...";
+            btnSelectCoverArt.UseVisualStyleBackColor = true;
+            btnSelectCoverArt.Click += btnSelectCoverArt_Click;
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1060, 655);
+            Controls.Add(btnSelectCoverArt);
             Controls.Add(btnFolder);
             Controls.Add(label5);
             Controls.Add(txtBackCover);
@@ -192,5 +204,6 @@
         private TextBox txtBackCover;
         private Label label5;
         private Button btnFolder;
+        private Button btnSelectCoverArt;
     }
 }

@@ -5,10 +5,10 @@ using ATL;
 
 namespace CDCasePrinter
 {
-    public partial class Form1 : Form
+    public partial class MainForm : Form
     {
         private int page = 0;
-        public Form1()
+        public MainForm()
         {
             InitializeComponent();
         }
@@ -60,11 +60,11 @@ namespace CDCasePrinter
 
             var drawFormat = new StringFormat(StringFormatFlags.DirectionVertical);
             var size = g.MeasureString(title, spineFont, new PointF(0, 0), drawFormat);
-            g.DrawString(title, 
-                spineFont, 
-                Brushes.Black, 
-                marginX + width - 5.5f, 
-                marginY + (118 / 2 - size.Height / 2), 
+            g.DrawString(title,
+                spineFont,
+                Brushes.Black,
+                marginX + width - 5.5f,
+                marginY + (118 / 2 - size.Height / 2),
                 drawFormat);
 
             var state = g.Save();
@@ -111,8 +111,8 @@ namespace CDCasePrinter
             g.DrawString(txtFrontCoverText.Text, new Font("Ariel", 10), Brushes.Black,
                 new RectangleF(marginX,
                     marginY + padding,
-                    120 - padding*2,
-                    120 - padding*2),
+                    120 - padding * 2,
+                    120 - padding * 2),
                 drawFormat);
         }
         private void btnPrint_Click(object sender, EventArgs e)
@@ -155,7 +155,7 @@ namespace CDCasePrinter
             var track1 = new Track(firstFile);
             txtArtist.Text = track1.Artist;
             txtAlbum.Text = track1.Album;
-            
+
             var audioFormat = $"Source Audio Format: {track1.AudioFormat.Name}";
             if (track1.AudioFormat.ShortName.StartsWith("MPEG"))
             {
@@ -182,6 +182,16 @@ namespace CDCasePrinter
             songs.AppendLine();
             songs.AppendLine(audioFormat);
             txtBackCover.Text = songs.ToString();
+        }
+
+        private void btnSelectCoverArt_Click(object sender, EventArgs e)
+        {
+            using OpenFileDialog ofd = new();
+            ofd.Filter = "Image Files|*.jpg;*.jpeg;*.png;*.bmp|All Files|*.*";
+            if (ofd.ShowDialog() == DialogResult.OK)
+            {
+                txtCoverArt.Text = ofd.FileName;
+            }
         }
     }
 }
