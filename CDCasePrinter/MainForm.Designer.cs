@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             printDocument1 = new System.Drawing.Printing.PrintDocument();
             btnPrint = new Button();
             txtFrontCoverText = new TextBox();
@@ -163,7 +164,7 @@
             btnSelectCoverArt.UseVisualStyleBackColor = true;
             btnSelectCoverArt.Click += btnSelectCoverArt_Click;
             // 
-            // Form1
+            // MainForm
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
@@ -181,8 +182,9 @@
             Controls.Add(txtCoverArt);
             Controls.Add(txtFrontCoverText);
             Controls.Add(btnPrint);
+            Icon = (Icon)resources.GetObject("$this.Icon");
             Margin = new Padding(3, 4, 3, 4);
-            Name = "Form1";
+            Name = "MainForm";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "CD Case Printer";
             ResumeLayout(false);

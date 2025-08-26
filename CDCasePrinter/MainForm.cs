@@ -129,22 +129,15 @@ namespace CDCasePrinter
 
         private void ShowPrintPreview()
         {
-            using var printerSelector = new PrintDialog();
-            printerSelector.Document = printDocument1;
-
-            if (printerSelector.ShowDialog() == DialogResult.OK)
-            {
-                printDocument1.PrinterSettings = printerSelector.PrinterSettings;
-                using var pp = new PrintPreviewDialog();
-                pp.Document = printDocument1;
-                (pp as Form).WindowState = FormWindowState.Maximized;
-
-                pp.ShowDialog();
-            }
+            using var pp = new PrintPreviewForm();
+            pp.Document = printDocument1;
+            pp.ShowDialog();
         }
 
         private void btnFolder_Click(object sender, EventArgs e)
         {
+            txtFrontCoverText.Text = "";
+
             var imageFiles = new[] { ".jpg", ".jpeg", ".png", ".bmp" };
             var audioFiles = new[] { ".mp3", ".flac", ".ogg", ".wav", ".m4a" };
             using var dlg = new FolderBrowserDialog();
@@ -182,6 +175,7 @@ namespace CDCasePrinter
             songs.AppendLine();
             songs.AppendLine(audioFormat);
             txtBackCover.Text = songs.ToString();
+
         }
 
         private void btnSelectCoverArt_Click(object sender, EventArgs e)
