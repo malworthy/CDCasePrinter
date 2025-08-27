@@ -136,14 +136,24 @@ namespace CDCasePrinter
 
         private void btnFolder_Click(object sender, EventArgs e)
         {
-            txtFrontCoverText.Text = "";
+            // Below is the most important line of code in this entire project!
+            // Remove it and you cannot print. It overcomes some issue with .NET, printers and the ATL library.
+            Console.WriteLine(printDocument1.PrinterSettings.PrinterName);
 
-            var imageFiles = new[] { ".jpg", ".jpeg", ".png", ".bmp" };
-            var audioFiles = new[] { ".mp3", ".flac", ".ogg", ".wav", ".m4a" };
+            txtFrontCoverText.Text = "";
+            
             using var dlg = new FolderBrowserDialog();
             if (dlg.ShowDialog() != DialogResult.OK) return;
-            var files = Directory.GetFiles(dlg.SelectedPath);
+            PopulateDetails(dlg.SelectedPath);
+        }
+
+        private void PopulateDetails(string folder)
+        {
+            var imageFiles = new[] { ".jpg", ".jpeg", ".png", ".bmp" };
+            var audioFiles = new[] { ".mp3", ".flac", ".ogg", ".wav", ".m4a" };
+            var files = Directory.GetFiles(folder);
             if (files.Length == 0) return;
+
             var firstFile = files.FirstOrDefault(x => audioFiles.Contains(Path.GetExtension(x.ToLower())));
             var track1 = new Track(firstFile);
             txtArtist.Text = track1.Artist;
@@ -175,7 +185,6 @@ namespace CDCasePrinter
             songs.AppendLine();
             songs.AppendLine(audioFormat);
             txtBackCover.Text = songs.ToString();
-
         }
 
         private void btnSelectCoverArt_Click(object sender, EventArgs e)
@@ -187,5 +196,6 @@ namespace CDCasePrinter
                 txtCoverArt.Text = ofd.FileName;
             }
         }
+
     }
 }

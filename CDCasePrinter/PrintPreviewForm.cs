@@ -53,6 +53,7 @@ public partial class PrintPreviewForm : Form
         }
         try
         {
+            //MessageBox.Show("Printer is valid");
             Document.Print();
         }
         catch (Exception ex)
