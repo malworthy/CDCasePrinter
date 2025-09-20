@@ -11,6 +11,14 @@ namespace CDCasePrinter
         public MainForm()
         {
             InitializeComponent();
+            this.Text += $" - Version {GetVersion()}";
+        }
+
+        private string? GetVersion()
+        {
+            var assembly = Assembly.GetExecutingAssembly();
+            var fvi = System.Diagnostics.FileVersionInfo.GetVersionInfo(assembly.Location);
+            return fvi.FileVersion;
         }
 
         private void printDocument1_PrintPage(object sender, System.Drawing.Printing.PrintPageEventArgs e)
@@ -18,7 +26,14 @@ namespace CDCasePrinter
             if (e.Graphics is null) return;
             e.Graphics.PageUnit = GraphicsUnit.Millimeter;
             page++;
-            if (page == 1)
+            if (chkSlimline.Checked)
+            {
+                PrintSlimlineFrontCover(e.Graphics);
+                PrintFooter(e.Graphics);
+                e.HasMorePages = false;
+                page = 0;
+            }
+            else if (page == 1)
             {
                 PrintFrontCover(e.Graphics);
                 PrintFooter(e.Graphics);
@@ -35,10 +50,7 @@ namespace CDCasePrinter
 
         private void PrintFooter(Graphics g)
         {
-            var assembly = Assembly.GetExecutingAssembly();
-            var fvi = System.Diagnostics.FileVersionInfo.GetVersionInfo(assembly.Location);
-
-            var text = $"CD Case Printer - Version {fvi.FileVersion}";
+            var text = $"CD Case Printer - Version {GetVersion()}";
             g.DrawString(text, new Font("Ariel", 9), Brushes.Gray, 10, 280);
         }
 
@@ -114,6 +126,89 @@ namespace CDCasePrinter
                     120 - padding * 2,
                     120 - padding * 2),
                 drawFormat);
+        }
+
+        private void PrintSlimlineFrontCover(Graphics g)
+        {
+            var recPen = new Pen(Color.Black, 0.25f);
+            float marginX = 45;
+            float marginY = 5;
+            float padding = 10;
+            float edgeWidth = 18;
+
+            g.DrawRectangle(recPen,
+                new RectangleF(new PointF(marginX+2, marginY), 
+                new SizeF(116, edgeWidth)));
+
+            g.DrawLine(recPen, marginX+2, marginY + 3, marginX + 118, marginY + 3);
+
+            // Spine
+            var state = g.Save();
+            g.ResetTransform();
+            g.RotateTransform(180);
+
+            string title = $"{txtArtist.Text} - {txtAlbum.Text}";
+            var spineFont = new Font("Ariel", 7);
+            var size = g.MeasureString(title, spineFont, new PointF(0, 0), 
+                new StringFormat(StringFormatFlags.NoWrap));
+            g.TranslateTransform(105 + size.Width / 2,
+                marginY + 3.2f, MatrixOrder.Append);
+            g.DrawString(title,
+                spineFont,
+                Brushes.Black, 0,0);
+            //105 - size.Width / 2,
+            //    marginY + 0.5f);
+
+            g.Restore(state);
+
+            // Edge
+            var artistFont = new Font("Ariel", 12, FontStyle.Bold);
+            var albumFont = new Font("Ariel", 12);
+            size = g.MeasureString(txtArtist.Text, artistFont, new PointF(0, 0),
+                new StringFormat(StringFormatFlags.NoWrap));
+            g.DrawString(txtArtist.Text,
+                artistFont,
+                Brushes.Black,
+                marginX + 5,
+                marginY + 5);
+
+            var albumSize = g.MeasureString(txtAlbum.Text, albumFont, new PointF(0, 0),
+                new StringFormat(StringFormatFlags.NoWrap));
+            var totalLength = size.Width + albumSize.Width;
+
+            if (totalLength > 110)
+            {
+                g.DrawString(txtAlbum.Text, albumFont, Brushes.Gray, marginX + 5,
+                    marginY + 5 + size.Height);
+            }
+            else
+            {
+                g.DrawString(txtAlbum.Text, albumFont, Brushes.Gray, marginX + 5 + size.Width,
+                    marginY + 5);
+            }
+
+            marginY += edgeWidth;
+
+            g.DrawRectangle(recPen, new RectangleF(new PointF(marginX, marginY), new SizeF(120, 240)));
+            g.DrawLine(recPen, marginX, marginY + 120, marginX + 120, marginY + 120);
+            if (!string.IsNullOrEmpty(txtCoverArt.Text) && File.Exists(txtCoverArt.Text))
+            {
+                var bmp = (Bitmap)Bitmap.FromFile(txtCoverArt.Text);
+                bmp.RotateFlip(RotateFlipType.Rotate270FlipXY);
+                g.DrawImage(bmp, new RectangleF(marginX, marginY, 120, 120));
+                bmp.Dispose();
+            }
+
+            var drawFormat = new StringFormat(StringFormatFlags.DirectionVertical | StringFormatFlags.DirectionRightToLeft);
+
+            g.DrawString(txtBackCover.Text, new Font("Ariel", 10), Brushes.Black,
+                new RectangleF(marginX,
+                    marginY + padding + 120,
+                    135 - padding * 2,
+                    120 - padding * 2),
+                drawFormat);
+
+            
         }
         private void btnPrint_Click(object sender, EventArgs e)
         {

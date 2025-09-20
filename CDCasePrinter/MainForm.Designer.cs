@@ -43,6 +43,7 @@
             label5 = new Label();
             btnFolder = new Button();
             btnSelectCoverArt = new Button();
+            chkSlimline = new CheckBox();
             SuspendLayout();
             // 
             // printDocument1
@@ -164,11 +165,22 @@
             btnSelectCoverArt.UseVisualStyleBackColor = true;
             btnSelectCoverArt.Click += btnSelectCoverArt_Click;
             // 
+            // chkSlimline
+            // 
+            chkSlimline.AutoSize = true;
+            chkSlimline.Location = new Point(67, 564);
+            chkSlimline.Name = "chkSlimline";
+            chkSlimline.Size = new Size(119, 24);
+            chkSlimline.TabIndex = 13;
+            chkSlimline.Text = "Slimline Case";
+            chkSlimline.UseVisualStyleBackColor = true;
+            // 
             // MainForm
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1060, 655);
+            Controls.Add(chkSlimline);
             Controls.Add(btnSelectCoverArt);
             Controls.Add(btnFolder);
             Controls.Add(label5);
@@ -207,5 +219,6 @@
         private Label label5;
         private Button btnFolder;
         private Button btnSelectCoverArt;
+        private CheckBox chkSlimline;
     }
 }
