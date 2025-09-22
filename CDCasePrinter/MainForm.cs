@@ -97,7 +97,8 @@ namespace CDCasePrinter
                 new PointF(textX, marginY + border + size.Height));
 
             // songs
-            g.DrawString(txtBackCover.Text, new Font("Ariel", 10), Brushes.Black,
+            g.DrawString(txtBackCover.Text, new Font("Ariel", (float)numFontSize.Value), 
+                Brushes.Black,
                 new RectangleF(textX, marginY + 25, 130, 100));
         }
 
@@ -201,7 +202,8 @@ namespace CDCasePrinter
 
             var drawFormat = new StringFormat(StringFormatFlags.DirectionVertical | StringFormatFlags.DirectionRightToLeft);
 
-            g.DrawString(txtBackCover.Text, new Font("Ariel", 10), Brushes.Black,
+            g.DrawString(txtBackCover.Text, new Font("Ariel", (float)numFontSize.Value), 
+                Brushes.Black,
                 new RectangleF(marginX,
                     marginY + padding + 120,
                     135 - padding * 2,
@@ -244,7 +246,7 @@ namespace CDCasePrinter
 
         private void PopulateDetails(string folder)
         {
-            var imageFiles = new[] { ".jpg", ".jpeg", ".png", ".bmp" };
+            var imageFileExtensions = new[] { ".jpg", ".jpeg", ".png", ".bmp" };
             var audioFiles = new[] { ".mp3", ".flac", ".ogg", ".wav", ".m4a" };
             var files = Directory.GetFiles(folder);
             if (files.Length == 0) return;
@@ -260,8 +262,11 @@ namespace CDCasePrinter
                 if (track1.IsVBR) audioFormat += " (VBR)";
                 else audioFormat += $" ({track1.Bitrate} kbps)";
             }
+            var imageFiles = files.Where(x => imageFileExtensions.Contains(Path.GetExtension(x.ToLower())));
+            // if multiple images, prefer one that starts with "cover"
+            var imageFile = imageFiles.FirstOrDefault(x => Path.GetFileNameWithoutExtension(x)
+                .StartsWith("cover", StringComparison.CurrentCultureIgnoreCase)) ?? imageFiles.OrderByDescending(x => x).FirstOrDefault();
 
-            var imageFile = files.FirstOrDefault(x => imageFiles.Contains(Path.GetExtension(x.ToLower())));
             txtCoverArt.Text = imageFile ?? string.Empty;
             var songs = new StringBuilder();
             var totalDuration = TimeSpan.Zero;

@@ -44,6 +44,9 @@
             btnFolder = new Button();
             btnSelectCoverArt = new Button();
             chkSlimline = new CheckBox();
+            numFontSize = new NumericUpDown();
+            label6 = new Label();
+            ((System.ComponentModel.ISupportInitialize)numFontSize).BeginInit();
             SuspendLayout();
             // 
             // printDocument1
@@ -175,11 +178,32 @@
             chkSlimline.Text = "Slimline Case";
             chkSlimline.UseVisualStyleBackColor = true;
             // 
+            // numFontSize
+            // 
+            numFontSize.Location = new Point(572, 568);
+            numFontSize.Maximum = new decimal(new int[] { 16, 0, 0, 0 });
+            numFontSize.Minimum = new decimal(new int[] { 6, 0, 0, 0 });
+            numFontSize.Name = "numFontSize";
+            numFontSize.Size = new Size(150, 27);
+            numFontSize.TabIndex = 14;
+            numFontSize.Value = new decimal(new int[] { 10, 0, 0, 0 });
+            // 
+            // label6
+            // 
+            label6.AutoSize = true;
+            label6.Location = new Point(496, 570);
+            label6.Name = "label6";
+            label6.Size = new Size(69, 20);
+            label6.TabIndex = 15;
+            label6.Text = "Font Size";
+            // 
             // MainForm
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1060, 655);
+            Controls.Add(label6);
+            Controls.Add(numFontSize);
             Controls.Add(chkSlimline);
             Controls.Add(btnSelectCoverArt);
             Controls.Add(btnFolder);
@@ -199,6 +223,7 @@
             Name = "MainForm";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "CD Case Printer";
+            ((System.ComponentModel.ISupportInitialize)numFontSize).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -220,5 +245,7 @@
         private Button btnFolder;
         private Button btnSelectCoverArt;
         private CheckBox chkSlimline;
+        private NumericUpDown numFontSize;
+        private Label label6;
     }
 }
