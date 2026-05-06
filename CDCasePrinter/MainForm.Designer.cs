@@ -46,7 +46,12 @@
             chkSlimline = new CheckBox();
             numFontSize = new NumericUpDown();
             label6 = new Label();
+            txtQRCode = new TextBox();
+            label7 = new Label();
+            label8 = new Label();
+            numFrontFont = new NumericUpDown();
             ((System.ComponentModel.ISupportInitialize)numFontSize).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)numFrontFont).BeginInit();
             SuspendLayout();
             // 
             // printDocument1
@@ -55,7 +60,7 @@
             // 
             // btnPrint
             // 
-            btnPrint.Location = new Point(67, 594);
+            btnPrint.Location = new Point(64, 609);
             btnPrint.Margin = new Padding(3, 4, 3, 4);
             btnPrint.Name = "btnPrint";
             btnPrint.Size = new Size(86, 31);
@@ -70,6 +75,7 @@
             txtFrontCoverText.Margin = new Padding(3, 4, 3, 4);
             txtFrontCoverText.Multiline = true;
             txtFrontCoverText.Name = "txtFrontCoverText";
+            txtFrontCoverText.ScrollBars = ScrollBars.Vertical;
             txtFrontCoverText.Size = new Size(365, 293);
             txtFrontCoverText.TabIndex = 1;
             // 
@@ -136,6 +142,7 @@
             txtBackCover.Margin = new Padding(3, 4, 3, 4);
             txtBackCover.Multiline = true;
             txtBackCover.Name = "txtBackCover";
+            txtBackCover.ScrollBars = ScrollBars.Vertical;
             txtBackCover.Size = new Size(513, 481);
             txtBackCover.TabIndex = 9;
             // 
@@ -150,7 +157,7 @@
             // 
             // btnFolder
             // 
-            btnFolder.Location = new Point(159, 594);
+            btnFolder.Location = new Point(156, 611);
             btnFolder.Name = "btnFolder";
             btnFolder.Size = new Size(143, 31);
             btnFolder.TabIndex = 11;
@@ -197,11 +204,50 @@
             label6.TabIndex = 15;
             label6.Text = "Font Size";
             // 
+            // txtQRCode
+            // 
+            txtQRCode.Location = new Point(574, 613);
+            txtQRCode.Name = "txtQRCode";
+            txtQRCode.Size = new Size(432, 27);
+            txtQRCode.TabIndex = 16;
+            // 
+            // label7
+            // 
+            label7.AutoSize = true;
+            label7.Location = new Point(501, 614);
+            label7.Name = "label7";
+            label7.Size = new Size(68, 20);
+            label7.TabIndex = 17;
+            label7.Text = "QR Code";
+            // 
+            // label8
+            // 
+            label8.AutoSize = true;
+            label8.Location = new Point(206, 570);
+            label8.Name = "label8";
+            label8.Size = new Size(69, 20);
+            label8.TabIndex = 19;
+            label8.Text = "Font Size";
+            // 
+            // numFrontFont
+            // 
+            numFrontFont.Location = new Point(282, 568);
+            numFrontFont.Maximum = new decimal(new int[] { 16, 0, 0, 0 });
+            numFrontFont.Minimum = new decimal(new int[] { 6, 0, 0, 0 });
+            numFrontFont.Name = "numFrontFont";
+            numFrontFont.Size = new Size(150, 27);
+            numFrontFont.TabIndex = 18;
+            numFrontFont.Value = new decimal(new int[] { 10, 0, 0, 0 });
+            // 
             // MainForm
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1060, 655);
+            Controls.Add(label8);
+            Controls.Add(numFrontFont);
+            Controls.Add(label7);
+            Controls.Add(txtQRCode);
             Controls.Add(label6);
             Controls.Add(numFontSize);
             Controls.Add(chkSlimline);
@@ -224,6 +270,7 @@
             StartPosition = FormStartPosition.CenterScreen;
             Text = "CD Case Printer";
             ((System.ComponentModel.ISupportInitialize)numFontSize).EndInit();
+            ((System.ComponentModel.ISupportInitialize)numFrontFont).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -247,5 +294,9 @@
         private CheckBox chkSlimline;
         private NumericUpDown numFontSize;
         private Label label6;
+        private TextBox txtQRCode;
+        private Label label7;
+        private Label label8;
+        private NumericUpDown numFrontFont;
     }
 }

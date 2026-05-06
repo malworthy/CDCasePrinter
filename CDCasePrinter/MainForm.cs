@@ -8,6 +8,7 @@ namespace CDCasePrinter
     public partial class MainForm : Form
     {
         private int page = 0;
+        private string _isrc;
         public MainForm()
         {
             InitializeComponent();
@@ -66,6 +67,12 @@ namespace CDCasePrinter
             float border = 10;
             float width = 150;
 
+            if (!string.IsNullOrEmpty(txtQRCode.Text))
+            {
+                var qr = QRCode(txtQRCode.Text);
+                g.DrawImage(qr, new RectangleF(marginX + width - 30, marginY, 20, 20));
+            }
+
             g.DrawRectangle(recPen, new RectangleF(new PointF(marginX, marginY), new SizeF(width, 118)));
             g.DrawLine(recPen, marginX + 6, marginY, marginX + 6, marginY + 118);
             g.DrawLine(recPen, marginX + width - 6, marginY, marginX + width - 6, marginY + 118);
@@ -86,6 +93,13 @@ namespace CDCasePrinter
             g.DrawString(title, spineFont, Brushes.Black, 0, 0);
             g.Restore(state);
 
+            if (!string.IsNullOrEmpty(_isrc))
+            {                 
+                g.DrawString(_isrc, 
+                    new Font("Ariel", 5), 
+                    Brushes.Gray, marginX + border, marginY + 1);
+            }
+
             var textX = marginX + border + 6;
             // artist
             g.DrawString(txtArtist.Text, artistFont, Brushes.Black,
@@ -100,6 +114,14 @@ namespace CDCasePrinter
             g.DrawString(txtBackCover.Text, new Font("Ariel", (float)numFontSize.Value), 
                 Brushes.Black,
                 new RectangleF(textX, marginY + 25, 130, 100));
+        }
+
+        private Bitmap QRCode(string text)
+        {
+            var qrWriter = new QRCoder.QRCodeGenerator();
+            var qrData = qrWriter.CreateQrCode(text, QRCoder.QRCodeGenerator.ECCLevel.Q);
+            var qrCode = new QRCoder.QRCode(qrData);
+            return qrCode.GetGraphic(10);
         }
 
         private void PrintFrontCover(Graphics g)
@@ -121,7 +143,7 @@ namespace CDCasePrinter
 
             var drawFormat = new StringFormat(StringFormatFlags.DirectionVertical | StringFormatFlags.DirectionRightToLeft);
 
-            g.DrawString(txtFrontCoverText.Text, new Font("Ariel", 10), Brushes.Black,
+            g.DrawString(txtFrontCoverText.Text, new Font("Ariel", (float)numFrontFont.Value), Brushes.Black,
                 new RectangleF(marginX,
                     marginY + padding,
                     120 - padding * 2,
@@ -255,8 +277,16 @@ namespace CDCasePrinter
             var track1 = new Track(firstFile);
             txtArtist.Text = track1.Artist;
             txtAlbum.Text = track1.Album;
-
-            var audioFormat = $"Source Audio Format: {track1.AudioFormat.Name}";
+            txtQRCode.Text = string.Empty;
+            if (track1.Comment.StartsWith("Visit"))
+            {
+                var albumlink = string.Join("", track1.Album.Replace(" ", "-")
+                    .Where(x => char.IsAsciiLetterOrDigit(x) || x == '-'));
+                var bandcamplink = $"{track1.Comment.Substring(5).Trim()}/album/{albumlink.ToLower()}";
+                txtQRCode.Text = bandcamplink;
+            }
+            _isrc = track1.ISRC;
+            var audioFormat = $"Source Audio Format: {track1.AudioFormat.ShortName}";
             if (track1.AudioFormat.ShortName.StartsWith("MPEG"))
             {
                 if (track1.IsVBR) audioFormat += " (VBR)";
