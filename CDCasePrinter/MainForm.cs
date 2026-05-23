@@ -94,9 +94,9 @@ namespace CDCasePrinter
             g.Restore(state);
 
             if (!string.IsNullOrEmpty(_isrc))
-            {                 
-                g.DrawString(_isrc, 
-                    new Font("Ariel", 5), 
+            {
+                g.DrawString(_isrc,
+                    new Font("Ariel", 5),
                     Brushes.Gray, marginX + border, marginY + 1);
             }
 
@@ -111,7 +111,7 @@ namespace CDCasePrinter
                 new PointF(textX, marginY + border + size.Height));
 
             // songs
-            g.DrawString(txtBackCover.Text, new Font("Ariel", (float)numFontSize.Value), 
+            g.DrawString(txtBackCover.Text, new Font("Ariel", (float)numFontSize.Value),
                 Brushes.Black,
                 new RectangleF(textX, marginY + 25, 130, 100));
         }
@@ -160,10 +160,10 @@ namespace CDCasePrinter
             float edgeWidth = 18;
 
             g.DrawRectangle(recPen,
-                new RectangleF(new PointF(marginX+2, marginY), 
+                new RectangleF(new PointF(marginX + 2, marginY),
                 new SizeF(116, edgeWidth)));
 
-            g.DrawLine(recPen, marginX+2, marginY + 3, marginX + 118, marginY + 3);
+            g.DrawLine(recPen, marginX + 2, marginY + 3, marginX + 118, marginY + 3);
 
             // Spine
             var state = g.Save();
@@ -172,13 +172,13 @@ namespace CDCasePrinter
 
             string title = $"{txtArtist.Text} - {txtAlbum.Text}";
             var spineFont = new Font("Ariel", 7);
-            var size = g.MeasureString(title, spineFont, new PointF(0, 0), 
+            var size = g.MeasureString(title, spineFont, new PointF(0, 0),
                 new StringFormat(StringFormatFlags.NoWrap));
             g.TranslateTransform(105 + size.Width / 2,
                 marginY + 3.2f, MatrixOrder.Append);
             g.DrawString(title,
                 spineFont,
-                Brushes.Black, 0,0);
+                Brushes.Black, 0, 0);
             //105 - size.Width / 2,
             //    marginY + 0.5f);
 
@@ -224,7 +224,7 @@ namespace CDCasePrinter
 
             var drawFormat = new StringFormat(StringFormatFlags.DirectionVertical | StringFormatFlags.DirectionRightToLeft);
 
-            g.DrawString(txtBackCover.Text, new Font("Ariel", (float)numFontSize.Value), 
+            g.DrawString(txtBackCover.Text, new Font("Ariel", (float)numFontSize.Value),
                 Brushes.Black,
                 new RectangleF(marginX,
                     marginY + padding + 120,
@@ -232,7 +232,7 @@ namespace CDCasePrinter
                     120 - padding * 2),
                 drawFormat);
 
-            
+
         }
         private void btnPrint_Click(object sender, EventArgs e)
         {
@@ -260,7 +260,7 @@ namespace CDCasePrinter
             Console.WriteLine(printDocument1.PrinterSettings.PrinterName);
 
             txtFrontCoverText.Text = "";
-            
+
             using var dlg = new FolderBrowserDialog();
             if (dlg.ShowDialog() != DialogResult.OK) return;
             PopulateDetails(dlg.SelectedPath);
@@ -300,17 +300,26 @@ namespace CDCasePrinter
             txtCoverArt.Text = imageFile ?? string.Empty;
             var songs = new StringBuilder();
             var totalDuration = TimeSpan.Zero;
-            foreach (var file in files)
+            var tracks = files.Select(x => new Track(x));
+            foreach (var track in tracks.OrderBy(x => x.TrackNumber))
             {
-                var track = new Track(file);
                 if (track.Duration > 0)
                 {
                     var duration = TimeSpan.FromSeconds(track.Duration);
+                    
                     songs.AppendLine($"{track.TrackNumber}. {track.Title} {duration:m\\:ss}");
                     totalDuration += duration;
                 }
             }
-            songs.AppendLine($"Total Length: {totalDuration:m\\:ss}");
+            if (totalDuration.TotalMinutes < 60)
+            {
+                songs.AppendLine($"Total Length: {totalDuration:m\\:ss}");
+            }
+            else
+            {
+                songs.AppendLine($"Total Length: {totalDuration:h\\:mm\\:ss}");
+            }
+            
             songs.AppendLine();
             songs.AppendLine();
             songs.AppendLine(audioFormat);
