@@ -58,6 +58,8 @@
             panel5 = new Panel();
             panel6 = new Panel();
             panel7 = new Panel();
+            txtCode = new TextBox();
+            label9 = new Label();
             ((System.ComponentModel.ISupportInitialize)numFontSize).BeginInit();
             ((System.ComponentModel.ISupportInitialize)numFrontFont).BeginInit();
             tableLayoutPanel1.SuspendLayout();
@@ -348,6 +350,8 @@
             // 
             // panel7
             // 
+            panel7.Controls.Add(txtCode);
+            panel7.Controls.Add(label9);
             panel7.Controls.Add(label6);
             panel7.Controls.Add(txtQRCode);
             panel7.Controls.Add(label7);
@@ -357,6 +361,22 @@
             panel7.Name = "panel7";
             panel7.Size = new Size(580, 70);
             panel7.TabIndex = 6;
+            // 
+            // txtCode
+            // 
+            txtCode.Location = new Point(284, 0);
+            txtCode.Name = "txtCode";
+            txtCode.Size = new Size(293, 27);
+            txtCode.TabIndex = 19;
+            // 
+            // label9
+            // 
+            label9.AutoSize = true;
+            label9.Location = new Point(178, 5);
+            label9.Name = "label9";
+            label9.Size = new Size(100, 20);
+            label9.TabIndex = 18;
+            label9.Text = "Code/Serial #";
             // 
             // MainForm
             // 
@@ -420,5 +440,7 @@
         private Panel panel5;
         private Panel panel6;
         private Panel panel7;
+        private TextBox txtCode;
+        private Label label9;
     }
 }

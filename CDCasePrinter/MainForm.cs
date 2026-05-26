@@ -8,7 +8,7 @@ namespace CDCasePrinter
     public partial class MainForm : Form
     {
         private int page = 0;
-        private string _isrc;
+        //private string _isrc;
         public MainForm()
         {
             InitializeComponent();
@@ -93,9 +93,9 @@ namespace CDCasePrinter
             g.DrawString(title, spineFont, Brushes.Black, 0, 0);
             g.Restore(state);
 
-            if (!string.IsNullOrEmpty(_isrc))
+            if (!string.IsNullOrEmpty(txtCode.Text))
             {
-                g.DrawString(_isrc,
+                g.DrawString(txtCode.Text,
                     new Font("Ariel", 5),
                     Brushes.Gray, marginX + border, marginY + 1);
             }
@@ -285,7 +285,7 @@ namespace CDCasePrinter
                 var bandcamplink = $"{track1.Comment.Substring(5).Trim()}/album/{albumlink.ToLower()}";
                 txtQRCode.Text = bandcamplink;
             }
-            _isrc = track1.ISRC;
+            txtCode.Text = track1.ISRC;
             var audioFormat = $"Source Audio Format: {track1.AudioFormat.ShortName}";
             if (track1.AudioFormat.ShortName.StartsWith("MPEG"))
             {
