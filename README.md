@@ -2,6 +2,9 @@
 
 A simple tool for printing the front and rear cover for a CD Jewel Case
 
+## Installing
+Windows installer provided in releases section.
+
 ### How to use
 
 1) Purchase music as a digital download from Bandcamp or elsewhere
