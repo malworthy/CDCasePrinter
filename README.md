@@ -49,6 +49,6 @@ Text positions are hard-coded and cannot be changed. Excessive options suck and 
 
 ## Screenshots
 
-![CD Case Printer](Images/screenshot1.png)
+![CD Case Printer](images/screenshot1.png)
 
-![Print Preview](Images/screenshot2.png)
+![Print Preview](images/screenshot2.png)
