@@ -1,6 +1,7 @@
 using System.Drawing.Drawing2D;
 using System.Reflection;
 using System.Text;
+using System.Text.Json;
 using ATL;
 
 namespace CDCasePrinter
@@ -57,10 +58,20 @@ namespace CDCasePrinter
 
         private void PrintBackCover(Graphics g)
         {
+            Settings settings = new();
             string title = $"{txtArtist.Text} - {txtAlbum.Text}";
-            var spineFont = new Font("Ariel", 12);
-            var artistFont = new Font("Ariel", 14, FontStyle.Bold);
-            var albumFont = new Font("Ariel", 12);
+            var spineFont = new Font(settings.SpineFont.FontFamily, 
+                settings.SpineFont.FontSize, 
+                settings.SpineFont.Style);
+            var artistFont = new Font(settings.ArtistFont.FontFamily, 
+                settings.ArtistFont.FontSize, 
+                settings.ArtistFont.Style);
+            var albumFont = new Font(settings.AlbumFont.FontFamily, 
+                settings.AlbumFont.FontSize, 
+                settings.AlbumFont.Style);
+            var codeFont = new Font(settings.CodeFont.FontFamily,
+                settings.CodeFont.FontSize,
+                settings.CodeFont.Style);
             var recPen = new Pen(Color.Black, 0.5f);
             float marginX = 25;
             float marginY = 25;
@@ -96,7 +107,7 @@ namespace CDCasePrinter
             if (!string.IsNullOrEmpty(txtCode.Text))
             {
                 g.DrawString(txtCode.Text,
-                    new Font("Ariel", 5),
+                    codeFont,
                     Brushes.Gray, marginX + border, marginY + 1);
             }
 
@@ -111,7 +122,7 @@ namespace CDCasePrinter
                 new PointF(textX, marginY + border + size.Height));
 
             // songs
-            g.DrawString(txtBackCover.Text, new Font("Ariel", (float)numFontSize.Value),
+            g.DrawString(txtBackCover.Text, new Font(settings.DefaultFontFamily, (float)numFontSize.Value),
                 Brushes.Black,
                 new RectangleF(textX, marginY + 25, 130, 100));
         }
@@ -126,6 +137,8 @@ namespace CDCasePrinter
 
         private void PrintFrontCover(Graphics g)
         {
+            Settings settings = new();
+
             var recPen = new Pen(Color.Black, 0.5f);
             float marginX = 45;
             float marginY = 25;
@@ -143,7 +156,9 @@ namespace CDCasePrinter
 
             var drawFormat = new StringFormat(StringFormatFlags.DirectionVertical | StringFormatFlags.DirectionRightToLeft);
 
-            g.DrawString(txtFrontCoverText.Text, new Font("Ariel", (float)numFrontFont.Value), Brushes.Black,
+            g.DrawString(txtFrontCoverText.Text, new Font(settings.DefaultFontFamily, 
+                (float)numFrontFont.Value), 
+                Brushes.Black,
                 new RectangleF(marginX,
                     marginY + padding,
                     120 - padding * 2,
