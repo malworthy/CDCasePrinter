@@ -315,7 +315,8 @@ namespace CDCasePrinter
             txtCoverArt.Text = imageFile ?? string.Empty;
             var songs = new StringBuilder();
             var totalDuration = TimeSpan.Zero;
-            var tracks = files.Select(x => new Track(x));
+            var tracks = files.Where(x => audioFiles.Contains(Path.GetExtension(x.ToLower())))
+                .Select(x => new Track(x));
             foreach (var track in tracks.OrderBy(x => x.TrackNumber))
             {
                 if (track.Duration > 0)
